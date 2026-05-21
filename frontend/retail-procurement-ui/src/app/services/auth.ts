@@ -12,7 +12,7 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:8080/api/auth';
+  private readonly baseUrl = '/api/auth';
   private readonly tokenKey = 'auth_token';
   private readonly userKey = 'auth_user';
 

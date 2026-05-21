@@ -32,6 +32,7 @@ public class SupplierStoreItemRepository : ISupplierStoreItemRepository
     public async Task<IEnumerable<SupplierStoreItem>> GetByStoreItemIdAsync(int storeItemId)
         => await _context.SupplierStoreItems
             .Include(x => x.Supplier)
+            .Include(x => x.StoreItem)
             .Where(x => x.StoreItemId == storeItemId)
             .ToListAsync();
 
