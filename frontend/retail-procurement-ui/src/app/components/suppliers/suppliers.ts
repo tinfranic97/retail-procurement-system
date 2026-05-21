@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Supplier, SupplierStatistics } from '../../services/api';
 import { AuthService } from '../../services/auth';
+import { finalize } from 'rxjs/internal/operators/finalize';
 
 @Component({
   selector: 'app-suppliers',
@@ -20,7 +21,7 @@ export class Suppliers implements OnInit {
 
   form: Partial<Supplier> = { name: '', email: '', phone: '', address: '', contactPerson: '' };
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(private api: ApiService, private auth: AuthService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadSuppliers();
@@ -29,9 +30,20 @@ export class Suppliers implements OnInit {
 
   loadSuppliers(): void {
     this.loading = true;
-    this.api.getSuppliers().subscribe({
-      next: s => { this.suppliers = s; this.loading = false; },
-      error: () => { this.error = 'Failed to load suppliers.'; this.loading = false; }
+    
+    this.api.getSuppliers()
+    .pipe(
+      finalize(() => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }))
+    .subscribe({
+      next: s => {
+         this.suppliers = s; this.loading = false; 
+      },
+      error: () => { 
+        this.error = 'Failed to load suppliers.'; this.loading = false; 
+      }
     });
   }
 

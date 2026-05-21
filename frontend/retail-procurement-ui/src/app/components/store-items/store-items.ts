@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { ApiService, StoreItem } from '../../services/api';
 import { SignalRService } from '../../services/signalr';
 import { AuthService } from '../../services/auth';
@@ -27,7 +27,8 @@ export class StoreItems implements OnInit, OnDestroy {
   constructor(
     private api: ApiService,
     private signalR: SignalRService,
-    private auth: AuthService
+    private auth: AuthService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,10 +50,23 @@ export class StoreItems implements OnInit, OnDestroy {
 
   loadItems(): void {
     this.loading = true;
-    this.api.getStoreItems().subscribe({
-      next: items => { this.items = items; this.loading = false; },
-      error: () => { this.error = 'Failed to load items.'; this.loading = false; }
-    });
+    this.error = '';
+
+    this.api.getStoreItems()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: items => {
+          this.items = items;
+        },
+        error: () => {
+          this.error = 'Failed to load items.';
+        }
+      });
   }
 
   submitForm(): void {
