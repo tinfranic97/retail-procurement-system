@@ -1,0 +1,48 @@
+<div class="container">
+  <h2>Statistics</h2>
+  <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+  <div class="card">
+    <h3>Best Offer Lookup</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Product ID</label>
+        <input [(ngModel)]="productIdInput" name="productId" type="number" class="form-control" placeholder="Enter product ID" />
+      </div>
+      <button class="btn btn-primary" (click)="lookupBestOffer()">Find Best Offer</button>
+    </div>
+    <div *ngIf="bestOffer" class="offer-result">
+      <p><strong>Item:</strong> {{ bestOffer.storeItemName }}</p>
+      <p><strong>Best Supplier:</strong> {{ bestOffer.supplierName }}</p>
+      <p><strong>Price:</strong> ${{ bestOffer.supplierPrice | number:'1.2-2' }}</p>
+      <p><strong>Lead Time:</strong> {{ bestOffer.leadTimeDays }} days</p>
+      <p><strong>Selection Criteria:</strong> {{ bestOffer.selectionCriteria }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Current Quarter Plan (Q{{ currentQuarter() }} {{ currentYear() }})</h3>
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="!loading && quarterlyPlans.length === 0" class="empty">No quarterly plan set for current quarter.</div>
+    <table *ngIf="quarterlyPlans.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>Supplier</th>
+          <th>Quarter</th>
+          <th>Year</th>
+          <th>Budget</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of quarterlyPlans">
+          <td>{{ p.supplierName }}</td>
+          <td>Q{{ p.quarter }}</td>
+          <td>{{ p.year }}</td>
+          <td>${{ p.plannedBudget | number:'1.2-2' }}</td>
+          <td>{{ p.notes }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

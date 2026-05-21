@@ -1,0 +1,29 @@
+<div class="auth-container">
+  <div class="card auth-card">
+    <div class="mode-toggle">
+      <button [class.active]="mode === 'login'" (click)="mode = 'login'">Login</button>
+      <button [class.active]="mode === 'register'" (click)="mode = 'register'">Register</button>
+    </div>
+
+    <h2>{{ mode === 'login' ? 'Sign In' : 'Create Account' }}</h2>
+    <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+    <form (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Username</label>
+        <input [(ngModel)]="username" name="username" required class="form-control" />
+      </div>
+      <div *ngIf="mode === 'register'" class="form-group">
+        <label>Email</label>
+        <input [(ngModel)]="email" name="email" type="email" required class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input [(ngModel)]="password" name="password" type="password" required class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        {{ loading ? 'Loading...' : (mode === 'login' ? 'Sign In' : 'Register') }}
+      </button>
+    </form>
+  </div>
+</div>

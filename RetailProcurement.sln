@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{01800091-FBFE-4C8B-92E2-36F1509DBBC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailProcurement.API", "src\RetailProcurement.API\RetailProcurement.API.csproj", "{3466BDD0-0409-41F1-8F5F-569BAADDC5CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailProcurement.Core", "src\RetailProcurement.Core\RetailProcurement.Core.csproj", "{9A4E13D4-B217-45C9-B7D6-60C132E1334F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailProcurement.Infrastructure", "src\RetailProcurement.Infrastructure\RetailProcurement.Infrastructure.csproj", "{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CDC45352-9BC8-4F7F-B983-63D3BFAC5EF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailProcurement.Tests", "tests\RetailProcurement.Tests\RetailProcurement.Tests.csproj", "{2A3AE5AF-157A-4419-B097-FED5529ACCEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3466BDD0-0409-41F1-8F5F-569BAADDC5CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3466BDD0-0409-41F1-8F5F-569BAADDC5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3466BDD0-0409-41F1-8F5F-569BAADDC5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3466BDD0-0409-41F1-8F5F-569BAADDC5CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A4E13D4-B217-45C9-B7D6-60C132E1334F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4E13D4-B217-45C9-B7D6-60C132E1334F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4E13D4-B217-45C9-B7D6-60C132E1334F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4E13D4-B217-45C9-B7D6-60C132E1334F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A3AE5AF-157A-4419-B097-FED5529ACCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A3AE5AF-157A-4419-B097-FED5529ACCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A3AE5AF-157A-4419-B097-FED5529ACCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A3AE5AF-157A-4419-B097-FED5529ACCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3466BDD0-0409-41F1-8F5F-569BAADDC5CD} = {01800091-FBFE-4C8B-92E2-36F1509DBBC0}
+		{9A4E13D4-B217-45C9-B7D6-60C132E1334F} = {01800091-FBFE-4C8B-92E2-36F1509DBBC0}
+		{E0A85E1A-1D9F-4B57-B8B2-2C1B8C121252} = {01800091-FBFE-4C8B-92E2-36F1509DBBC0}
+		{2A3AE5AF-157A-4419-B097-FED5529ACCEF} = {CDC45352-9BC8-4F7F-B983-63D3BFAC5EF8}
+	EndGlobalSection
+EndGlobal

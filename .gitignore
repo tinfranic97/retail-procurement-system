@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.log
+
+## EF Migrations temp
+*.msi
+
+## Node
+frontend/retail-procurement-ui/node_modules/
+frontend/retail-procurement-ui/dist/
+
+## Docker
+.env
+
+## IDE
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="header">
+    <h2>Suppliers</h2>
+    <button *ngIf="isLoggedIn" class="btn btn-primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : '+ Add Supplier' }}
+    </button>
+  </div>
+
+  <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+  <form *ngIf="showForm" class="card form-card" (ngSubmit)="submitForm()">
+    <h3>New Supplier</h3>
+    <div class="form-group">
+      <label>Name</label>
+      <input [(ngModel)]="form.name" name="name" required class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input [(ngModel)]="form.email" name="email" type="email" required class="form-control" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Phone</label>
+        <input [(ngModel)]="form.phone" name="phone" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Contact Person</label>
+        <input [(ngModel)]="form.contactPerson" name="contactPerson" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input [(ngModel)]="form.address" name="address" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div class="grid" *ngIf="!loading">
+    <div class="card supplier-card" *ngFor="let s of suppliers">
+      <h3>{{ s.name }}</h3>
+      <p><strong>Email:</strong> {{ s.email }}</p>
+      <p><strong>Phone:</strong> {{ s.phone }}</p>
+      <p><strong>Contact:</strong> {{ s.contactPerson }}</p>
+      <p class="address">{{ s.address }}</p>
+      <button class="btn btn-secondary btn-sm" (click)="viewStats(s.id)">View Stats</button>
+    </div>
+  </div>
+
+  <div *ngIf="selectedStats" class="card stats-card">
+    <h3>Statistics: {{ selectedStats.supplierName }}</h3>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-value">{{ selectedStats.totalItemsSold }}</span>
+        <span class="stat-label">Items Sold</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${{ selectedStats.totalRevenue | number:'1.2-2' }}</span>
+        <span class="stat-label">Total Revenue</span>
+      </div>
+    </div>
+    <button class="btn btn-secondary btn-sm" (click)="selectedStats = null">Close</button>
+  </div>
+</div>

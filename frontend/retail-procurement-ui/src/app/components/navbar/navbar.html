@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">Retail Procurement</a>
+  </div>
+  <div class="navbar-links">
+    <a routerLink="/store-items" routerLinkActive="active">Store Items</a>
+    <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
+    <a routerLink="/statistics" routerLinkActive="active">Statistics</a>
+  </div>
+  <div class="navbar-auth">
+    <ng-container *ngIf="isLoggedIn$ | async; else loginLink">
+      <span class="username">{{ username }}</span>
+      <button class="btn btn-secondary btn-sm" (click)="logout()">Logout</button>
+    </ng-container>
+    <ng-template #loginLink>
+      <a routerLink="/login" class="btn btn-primary btn-sm">Login</a>
+    </ng-template>
+  </div>
+</nav>

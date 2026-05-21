@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="header">
+    <h2>Store Items</h2>
+    <button *ngIf="isLoggedIn" class="btn btn-primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : '+ Add Item' }}
+    </button>
+  </div>
+
+  <div *ngIf="notification" class="alert alert-success">{{ notification }}</div>
+  <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+
+  <form *ngIf="showForm" class="card form-card" (ngSubmit)="submitForm()">
+    <h3>New Store Item</h3>
+    <div class="form-group">
+      <label>Name</label>
+      <input [(ngModel)]="form.name" name="name" required class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input [(ngModel)]="form.description" name="description" class="form-control" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Price ($)</label>
+        <input [(ngModel)]="form.price" name="price" type="number" step="0.01" required class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Stock</label>
+        <input [(ngModel)]="form.stockQuantity" name="stockQuantity" type="number" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <input [(ngModel)]="form.category" name="category" required class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div class="grid" *ngIf="!loading">
+    <div class="card item-card" *ngFor="let item of items">
+      <div class="item-header">
+        <span class="badge">{{ item.category }}</span>
+        <span class="price">${{ item.price | number:'1.2-2' }}</span>
+      </div>
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.description }}</p>
+      <div class="item-footer">
+        <span class="stock" [class.low]="item.stockQuantity < 10">Stock: {{ item.stockQuantity }}</span>
+        <button *ngIf="isLoggedIn" class="btn btn-danger btn-sm" (click)="delete(item.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

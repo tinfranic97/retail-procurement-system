@@ -1,0 +1,8 @@
+**/.git
+**/.gitignore
+**/bin
+**/obj
+**/*.user
+**/node_modules
+frontend/retail-procurement-ui/node_modules
+frontend/retail-procurement-ui/dist
