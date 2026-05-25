@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
+import { finalize } from 'rxjs/internal/operators/finalize';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class Login {
   error = '';
   loading = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   submit(): void {
     this.loading = true;
@@ -28,9 +30,16 @@ export class Login {
       ? this.auth.login(this.username, this.password)
       : this.auth.register(this.username, this.email, this.password);
 
-    obs.subscribe({
+    obs.pipe(
+      finalize(() => {
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
       next: () => { this.loading = false; this.router.navigate(['/store-items']); },
-      error: () => { this.loading = false; this.error = 'Authentication failed. Please check your credentials.'; }
+      error: (err: HttpErrorResponse) => {
+        this.loading = false;
+        this.error = err.error?.message ?? 'Authentication failed. Please try again.';
+      }
     });
   }
 }

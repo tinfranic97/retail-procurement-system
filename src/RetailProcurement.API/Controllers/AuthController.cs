@@ -19,6 +19,15 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            var firstError = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .FirstOrDefault() ?? "Invalid request.";
+            return BadRequest(new { message = firstError });
+        }
+
         try
         {
             var response = await _authService.RegisterAsync(dto);
@@ -36,7 +45,16 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            var firstError = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .FirstOrDefault() ?? "Invalid request.";
+            return BadRequest(new { message = firstError });
+        }
+
         var response = await _authService.LoginAsync(dto);
-        return response is null ? Unauthorized(new { message = "Invalid credentials." }) : Ok(response);
+        return response is null ? Unauthorized(new { message = "Invalid username or password." }) : Ok(response);
     }
 }

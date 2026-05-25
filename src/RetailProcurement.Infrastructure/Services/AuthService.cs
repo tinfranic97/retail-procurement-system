@@ -26,7 +26,11 @@ public class AuthService : IAuthService
     {
         var existing = await _unitOfWork.Users.FindAsync(u => u.Username == dto.Username);
         if (existing.Any())
-            throw new InvalidOperationException("Username already exists.");
+            throw new InvalidOperationException($"Username '{dto.Username}' is already taken.");
+
+        var emailTaken = await _unitOfWork.Users.FindAsync(u => u.Email == dto.Email);
+        if (emailTaken.Any())
+            throw new InvalidOperationException($"Email '{dto.Email}' is already registered.");
 
         var user = new User
         {
