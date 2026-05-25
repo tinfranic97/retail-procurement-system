@@ -59,10 +59,10 @@ Once all containers are healthy, the application is available at:
 
 | Service | URL |
 |---|---|
-| Frontend | http://localhost |
-| API | http://localhost/api |
-| Swagger UI | http://localhost/swagger |
-| SignalR Hub | http://localhost/hubs/procurement |
+| Frontend | http://localhost:4200 |
+| API (direct) | http://localhost:8080/api |
+| Swagger UI | http://localhost:8080/swagger |
+| SignalR Hub | http://localhost:4200/hubs/procurement |
 
 > On first startup the API automatically runs EF Core migrations and seeds the database with 10 suppliers, 30 store items, 58 supplier–item relationships, and 100 sales records generated with Bogus.
 
