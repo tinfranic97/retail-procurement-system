@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth';
   selector: 'app-store-items',
   imports: [CommonModule, FormsModule],
   templateUrl: './store-items.html',
-  styleUrl: './store-items.scss',
+  styleUrls: ['./store-items.scss'],
 })
 export class StoreItems implements OnInit, OnDestroy {
   items: StoreItem[] = [];
@@ -63,22 +63,32 @@ export class StoreItems implements OnInit, OnDestroy {
         next: items => {
           this.items = items;
         },
-        error: () => {
-          this.error = 'Failed to load items.';
-        }
+        error: () => this.flashError('Failed to load items.')
       });
   }
 
   submitForm(): void {
-    this.api.createStoreItem(this.form).subscribe({
+    this.api.createStoreItem(this.form)
+    .pipe(
+      finalize(() => {
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
       next: () => { this.showForm = false; this.resetForm(); },
-      error: () => this.error = 'Failed to create item.'
+      error: () => this.flashError('Failed to create item.')
     });
   }
 
   delete(id: number): void {
     if (!confirm('Delete this item?')) return;
-    this.api.deleteStoreItem(id).subscribe({ error: () => this.error = 'Failed to delete item.' });
+    this.api.deleteStoreItem(id)
+    .pipe(
+      finalize(() => {
+        this.loadItems();
+      })
+    )
+    .subscribe({ error: () => this.flashError('Failed to delete item.') });
   }
 
   resetForm(): void {
@@ -87,7 +97,12 @@ export class StoreItems implements OnInit, OnDestroy {
 
   private notify(msg: string): void {
     this.notification = msg;
-    setTimeout(() => this.notification = '', 3000);
+    setTimeout(() => { this.notification = ''; this.cdr.detectChanges(); }, 3000);
+  }
+
+  private flashError(msg: string): void {
+    this.error = msg;
+    setTimeout(() => { this.error = ''; this.cdr.detectChanges(); }, 3000);
   }
 
   ngOnDestroy(): void {

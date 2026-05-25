@@ -15,6 +15,7 @@ export class Suppliers implements OnInit {
   suppliers: Supplier[] = [];
   loading = false;
   error = '';
+  notification = '';
   showForm = false;
   isLoggedIn = false;
   selectedStats: SupplierStatistics | null = null;
@@ -42,20 +43,31 @@ export class Suppliers implements OnInit {
          this.suppliers = s; this.loading = false; 
       },
       error: () => { 
-        this.error = 'Failed to load suppliers.'; this.loading = false; 
+        this.flashError('Failed to load suppliers.'); this.loading = false;
       }
     });
   }
 
   submitForm(): void {
-    this.api.createSupplier(this.form).subscribe({
+    this.api.createSupplier(this.form)
+    .pipe(
+      finalize(() => {
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
       next: s => {
         this.suppliers = [...this.suppliers, s];
         this.showForm = false;
         this.form = { name: '', email: '', phone: '', address: '', contactPerson: '' };
       },
-      error: () => this.error = 'Failed to create supplier.'
+      error: () => this.flashError('Failed to create supplier.')
     });
+  }
+
+  private flashError(msg: string): void {
+    this.error = msg;
+    setTimeout(() => { this.error = ''; this.cdr.detectChanges(); }, 3000);
   }
 
   viewStats(id: number): void {
@@ -66,7 +78,7 @@ export class Suppliers implements OnInit {
     }))
     .subscribe({
       next: stats => this.selectedStats = stats,
-      error: () => this.error = 'No statistics available for this supplier.'
+      error: () => this.flashError('No statistics available for this supplier.')
     });
   }
 }
