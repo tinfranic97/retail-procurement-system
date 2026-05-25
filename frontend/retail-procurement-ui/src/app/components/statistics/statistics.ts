@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, BestOffer, QuarterlyPlan } from '../../services/api';
+import { finalize } from 'rxjs/internal/operators/finalize';
 
 @Component({
   selector: 'app-statistics',
@@ -16,7 +17,7 @@ export class Statistics implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadQuarterlyPlan();
@@ -24,7 +25,12 @@ export class Statistics implements OnInit {
 
   loadQuarterlyPlan(): void {
     this.loading = true;
-    this.api.getCurrentQuarterlyPlan().subscribe({
+    this.api.getCurrentQuarterlyPlan()
+    .pipe(finalize(() => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }))
+    .subscribe({
       next: plans => { this.quarterlyPlans = plans; this.loading = false; },
       error: () => { this.error = 'Failed to load quarterly plan.'; this.loading = false; }
     });
@@ -33,7 +39,10 @@ export class Statistics implements OnInit {
   lookupBestOffer(): void {
     const id = parseInt(this.productIdInput);
     if (!id) return;
-    this.api.getBestOffer(id).subscribe({
+    this.api.getBestOffer(id)
+    .pipe(finalize(() => {
+      this.cdr.detectChanges();
+    })).subscribe({
       next: offer => { this.bestOffer = offer; this.error = ''; },
       error: () => { this.error = 'No offer found for this product.'; this.bestOffer = null; }
     });

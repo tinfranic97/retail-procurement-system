@@ -30,7 +30,7 @@ export class Suppliers implements OnInit {
 
   loadSuppliers(): void {
     this.loading = true;
-    
+
     this.api.getSuppliers()
     .pipe(
       finalize(() => {
@@ -59,7 +59,12 @@ export class Suppliers implements OnInit {
   }
 
   viewStats(id: number): void {
-    this.api.getSupplierStatistics(id).subscribe({
+    this.api.getSupplierStatistics(id)
+    .pipe(
+      finalize(() => {
+      this.cdr.detectChanges();
+    }))
+    .subscribe({
       next: stats => this.selectedStats = stats,
       error: () => this.error = 'No statistics available for this supplier.'
     });
