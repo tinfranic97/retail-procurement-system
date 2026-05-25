@@ -4,10 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
+
+  <!-- Required to access ASP.NET Core types (MVC, SignalR, Authorization) -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
@@ -22,10 +26,24 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Using Include="Microsoft.AspNetCore.Http" />
+  </ItemGroup>
+
+  <!--
+    Compile API controllers and hub directly into the test assembly.
+    This avoids loading RetailProcurement.API.dll (built with Microsoft.NET.Sdk.Web)
+    which Windows AppLocker blocks when loaded dynamically by the test runner.
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\src\RetailProcurement.API\Controllers\StoreItemsController.cs" />
+    <Compile Include="..\..\src\RetailProcurement.API\Controllers\SuppliersController.cs" />
+    <Compile Include="..\..\src\RetailProcurement.API\Controllers\StatisticsController.cs" />
+    <Compile Include="..\..\src\RetailProcurement.API\Controllers\SupplierStoreItemsController.cs" />
+    <Compile Include="..\..\src\RetailProcurement.API\Controllers\AuthController.cs" />
+    <Compile Include="..\..\src\RetailProcurement.API\Hubs\ProcurementHub.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RetailProcurement.API\RetailProcurement.API.csproj" />
     <ProjectReference Include="..\..\src\RetailProcurement.Core\RetailProcurement.Core.csproj" />
     <ProjectReference Include="..\..\src\RetailProcurement.Infrastructure\RetailProcurement.Infrastructure.csproj" />
   </ItemGroup>
