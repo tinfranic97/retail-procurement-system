@@ -20,3 +20,9 @@ frontend/retail-procurement-ui/dist/
 .idea/
 .vscode/
 *.swp
+
+## Claude Code
+.claude/
+
+## Test output
+TempTestOutput/
